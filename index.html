@@ -1,47 +1,54 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="goat.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
-    <script src="controller.js"></script>
-     <title>G.O.A.T Movies</title>
-</head>
-<body>
-    <header >
-      <div id="head">
-        <h1>G.O.A.T</h1>
-    </div>
-</header> 
-<main ng-view>
-<div class="content">
-  <div ng-controller="myAppController">
-    <button ng-click="movie = 'name'">According to Name</button>
-    <button ng-click="movie = 'IMDb'">According to IMDb</button>
-    <input type="text" ng-model="search" placeholder="search" />
-      <ul>
-        <div ng-repeat="item in items  | orderBy:movie | filter:search ">
-           <h3> {{item.name}} - {{item.IMDb}}</h3>
-           <div class="remove" ng-click="removeItem(item)"> X </div>
-           <div class="edit" ng-click="eddie(item)"> + </div>
-        
-        </div>
-        </ul>
-      <form ng-submit="addItem()">
-        <input type="text" placeholder="name" ng-model="item.name"/>
-        <input type="text" placeholder="year" ng-model="item.year"/>
-        <input type="text" placeholder="IMDb" ng-model="item.IMDb"/>
-        <input type="submit" value="Add Movie"/>
-      </form>
-      <button class="btn btn-info" ng-click="dating()">Update</button>
-    </div>
-  </main>
-    <footer>
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="goat.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+  <script src="controller.js"></script>
+  <title>G.O.A.T Movies</title>
+</head>
+
+<body>
+  <header>
+    <div id="head">
+      <h1>G.O.A.T</h1>
+    </div>
+  </header>
+  <main ng-view>
+    <div class="content">
+      <div ng-controller="myAppController">
+        <button ng-click="movie = 'name'">According to Name</button>
+        <button ng-click="movie = 'IMDb'">According to IMDb</button>
+        <input type="text" ng-model="search" placeholder="search" />
+        <ul>
+          <div ng-repeat="item in items  | orderBy:movie | filter:search ">
+            <h3> {{item.name}} - {{item.IMDb}}</h3>
+            <img ng-src="item.url" />
+            <div class="remove" ng-click="removeItem(item)"> X </div>
+            <div class="edit" ng-click="eddie(item)"> + </div>
+            
+          </div>
+        </ul>
+
+        <img id="blah" src="#" alt="your image" />
+        <form ng-submit="addItem()">
+          <input type="file" onchange="angular.element(this).scope().fileNameChanged(this)" />
+          <input type="text" placeholder="name" ng-model="item.name" />
+          <input type="text" placeholder="year" ng-model="item.year" />
+          <input type="text" placeholder="IMDb" ng-model="item.IMDb" />
+          <input type="submit" value="Add Movie" />
+        </form>
+        <button class="btn btn-info" ng-click="dating()">Update</button>
       </div>
-    </footer>
- </div>
+  </main>
+  <footer>
+
+    </div>
+  </footer>
+  </div>
 </body>
+
 </html>
