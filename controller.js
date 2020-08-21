@@ -1,6 +1,9 @@
 var myApp = angular.module('myApp',[]);
 
 myApp.controller('myAppController',function($scope,$http){
+
+    $scope.poster = null; 
+
     $scope.getItem = function () {
         $http.get("/items").then(function (res) {
             console.log(res);
@@ -9,6 +12,7 @@ myApp.controller('myAppController',function($scope,$http){
         })
     }
     $scope.addItem = function () {
+        $scope.item.url = $scope.poster;
         $http.post("/items",$scope.item).then(function (res){
             console.log(res);
             console.log("Valar Dohaeris");
@@ -38,5 +42,24 @@ myApp.controller('myAppController',function($scope,$http){
             $scope.getItem();
         })
     };
+
+    $scope.fileNameChanged = function (item) {
+        let file = item.files[0];
+      
+        let reader = new FileReader();      
+      
+        reader.onload = function(e) {
+          console.log(e.result);
+          $scope.poster = e.target.result;
+
+          document.getElementById("blah").src = e.target.result
+        };
+      
+        reader.onerror = function() {
+          console.log(reader.error);
+        };
+        reader.readAsDataURL(item.files[0]);
+
+      }
 
 })
