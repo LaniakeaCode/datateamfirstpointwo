@@ -6,16 +6,17 @@ myApp.controller('myAppController',function($scope,$http){
 
     $scope.getItem = function () {
         $http.get("/items").then(function (res) {
-            console.log(res);
-            console.log("Valar Morghulis");
+            // console.log(res);
+            console.log("Valar Dohaeris");
             $scope.items = res.data;
         })
+        
     }
     $scope.addItem = function () {
         $scope.item.url = $scope.poster;
         $http.post("/items",$scope.item).then(function (res){
-            console.log(res);
-            console.log("Valar Dohaeris");
+            // console.log(res);
+            console.log("Valar Morghulis");
             $scope.getItem();
         })
     }
@@ -36,6 +37,7 @@ myApp.controller('myAppController',function($scope,$http){
     };
 
     $scope.dating = function() {
+        $scope.item.url = $scope.poster;
         console.log($scope.item._id);
         $http.put('/items/' + $scope.item._id,$scope.item).then(function(res){
             console.log(res);
@@ -49,10 +51,10 @@ myApp.controller('myAppController',function($scope,$http){
         let reader = new FileReader();      
       
         reader.onload = function(e) {
-          console.log(e.result);
+        //   console.log(e.target.result);
           $scope.poster = e.target.result;
 
-          document.getElementById("blah").src = e.target.result
+        //   document.getElementById("blah").src = e.target.result
         };
       
         reader.onerror = function() {

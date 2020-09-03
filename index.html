@@ -4,6 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
   <link rel="stylesheet" href="goat.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
@@ -20,20 +22,29 @@
   <main ng-view>
     <div class="content">
       <div ng-controller="myAppController">
+
         <button ng-click="movie = 'name'">According to Name</button>
         <button ng-click="movie = 'IMDb'">According to IMDb</button>
         <input type="text" ng-model="search" placeholder="search" />
         <ul>
           <div ng-repeat="item in items  | orderBy:movie | filter:search ">
-            <h3> {{item.name}} - {{item.IMDb}}</h3>
-            <img ng-src="item.url" />
+
+            <div class="container">
+
+              <img ng-src="{{item.url}}" class="img-fluid" alt="your image" style="width:480px;height:480px;" />
+              <div class="overlay">
+                <div class="text">Movie:{{item.name}} <br>IMDb: {{item.IMDb}}<br>Year:{{item.year}}
+                </div>
+              </div>
+            </div>
+
             <div class="remove" ng-click="removeItem(item)"> X </div>
             <div class="edit" ng-click="eddie(item)"> + </div>
-            
+
           </div>
         </ul>
 
-        <img id="blah" src="#" alt="your image" />
+        <!-- <img id="blah" src="" alt="your image" style="width:480px;height:480px;"/> -->
         <form ng-submit="addItem()">
           <input type="file" onchange="angular.element(this).scope().fileNameChanged(this)" />
           <input type="text" placeholder="name" ng-model="item.name" />
