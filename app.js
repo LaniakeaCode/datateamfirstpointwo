@@ -3,6 +3,7 @@ var app = express();
 var mongojs = require('mongojs');
 var db = mongojs('items', ['items']);
 var db2 = mongojs('items',['items2']);
+var db3 = mongojs('items', ['hollyitems']);
 var bodyParser = require("body-parser");
 
 app.use(bodyParser.json({limit: "50mb"}));
@@ -28,6 +29,13 @@ app.get('/items16', function(req, res) {
     })
 })
 
+
+app.get('/magza', function(req, res) {
+    db3.hollyitems.find(function(err, docs) {
+        res.json(docs); // mağza için
+    })
+})
+
 app.post('/items6', function (req, res) {
     console.log("veri ekle");
     // console.log(req.body);
@@ -41,6 +49,22 @@ app.post('/items16', function(req,res){
     db2.items2.insert(req.body, function ( err, doc) {
         res.json(doc);
         // its  for login 
+    })
+})
+
+app.post('/magza/:id' , function (req, res) { // item kopyalayıp ekleme lazım 
+    console.log("item kopyalandı ve değiştirildi");
+    var user = findOne({_id: mongojs.ObjectId(id)}, function(err, doc) { // its for login
+        res.json(doc);
+    })
+
+    user._id = new ObjectId();
+    user.size = req.params.id;
+    user.adet = req.params.adet;
+    user.stoksayısı = req.params.stoksayısı;
+
+    db3.hollyitems.insert(user, function ( err, doc){
+        res.json(doc); // error olursa 
     })
 })
 
@@ -81,6 +105,15 @@ app.get('/items16/:id', function (req, res) {
     console.log(id);
 
     db2.items2.findOne({_id: mongojs.ObjectId(id)}, function(err, doc) { // its for login
+        res.json(doc);
+    })
+})
+
+app.get('/magza/:id', function (req, res) { // mağza için id'ye göre veritabanından item getirir.
+    var id = req.params.id;
+    console.log(id);
+    
+    db3.hollyitems.findOne({_id: mongojs.ObjectId(id)}, function(err, doc) {
         res.json(doc);
     })
 })
@@ -128,6 +161,7 @@ app.put('/items16/:id', function(req, res){
       
     })
 })
+
 
 
 app.listen(port, () => {
