@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 var port = 3000;
 
-app.get('/items6', function (req, res) {
+app.get('/items6', function (req, res) { // filmeri getirir
     console.log("veri al");
     db.items.find(function (err, docs) {
         // console.log(docs);
@@ -25,14 +25,14 @@ app.get('/items6', function (req, res) {
 app.get('/items16', function(req, res) {
     db2.items2.find(function(err, docs) {
         res.json(docs);
-        // its for login
+        // its for login  kullanıcı bilgilerini getirir
     })
 })
 
 
 app.get('/magza', function(req, res) {
     db3.hollyitems.find(function(err, docs) {
-        res.json(docs); // mağza için
+        res.json(docs); // mağza için ürünleri getirir
     })
 })
 
@@ -40,7 +40,7 @@ app.post('/items6', function (req, res) {
     console.log("veri ekle");
     // console.log(req.body);
     db.items.insert(req.body, function (err, doc) {
-        res.json(doc);
+        res.json(doc);  // film eklenebilir controller js ile bağlantılı olarak formdaki bilgileri alır
     })
 })
 
@@ -48,28 +48,31 @@ app.post('/items16', function(req,res){
     console.log("kullanıcı veririsi ekle");
     db2.items2.insert(req.body, function ( err, doc) {
         res.json(doc);
-        // its  for login 
+        // its  for login   kullanıcı bilgileri eklenebillir controller js ile bağlantılı olarak formdaki bilgileri alır
     })
 })
 
+//Başka Fikir: ayrıca kendi ürün tasarımlarınıda ekleyebilirler
+var id = req.params.id;
 app.post('/magza/:id' , function (req, res) { // item kopyalayıp ekleme lazım 
-    console.log("item kopyalandı ve değiştirildi");
-    var user = findOne({_id: mongojs.ObjectId(id)}, function(err, doc) { // its for login
-        res.json(doc);
+    console.log("item kopyalandı ve değiştirildi");  // ürünlerin idsi seçilip o ürünün kopyasını mağza veritabanına ekler.
+    var user = findOne({_id: mongojs.ObjectId(id)}, function(err, doc) { // 
+        res.json(doc);  // its 
     })
 
     user._id = new ObjectId();
-    user.size = req.params.id;
+    user.size = req.params.size;
     user.adet = req.params.adet;
     user.stoksayısı = req.params.stoksayısı;
 
-    db3.hollyitems.insert(user, function ( err, doc){
+    db3.hollyitems.insert(user, function ( err, doc){ // burda bi şekilde items2 'deki ki ürünü seçen kullanıcının sipariş listesine bu id'yi eklemem lazım.
         res.json(doc); // error olursa 
     })
+
 })
 
 
-app.delete('/items6/:id', function (req, res) {
+app.delete('/items6/:id', function (req, res) { // formda seçilen filmi silme
     console.log("silindi");
     var id = req.params.id;
     
@@ -80,7 +83,7 @@ app.delete('/items6/:id', function (req, res) {
     })
 })
 
-app.delete('/items16/:id', function (req, res) {
+app.delete('/items16/:id', function (req, res) { // formda seçilen kullanıcıyı silme
     console.log("kullanıcı hesabı silindi");
     var id = req.params.id;
 
@@ -91,7 +94,7 @@ app.delete('/items16/:id', function (req, res) {
     })
 })
 
-app.get('/items6/:id', function (req, res) {
+app.get('/items6/:id', function (req, res) { // formda seçilen filmi bulup getirme
     var id = req.params.id;
     console.log(id);
     
@@ -100,7 +103,7 @@ app.get('/items6/:id', function (req, res) {
     })
   })
 
-app.get('/items16/:id', function (req, res) {
+app.get('/items16/:id', function (req, res) { // formda seçilen kullanıcı bilgilerini silme
     var id = req.params.id;
     console.log(id);
 
@@ -116,19 +119,11 @@ app.get('/magza/:id', function (req, res) { // mağza için id'ye göre veritaba
     db3.hollyitems.findOne({_id: mongojs.ObjectId(id)}, function(err, doc) {
         res.json(doc);
     })
+
+
 })
 
-app.get('/items16/:id', function (req, res) {
-    var id = req.params.id;
-    console.log(id);
-
-    db2.items2.findOne({_id: mongojs.ObjectId(id)}, function(err, doc) { // its for login
-        res.json(doc);
-    })
-})
-
-
-app.put('/items6/:id', function(req, res){
+app.put('/items6/:id', function(req, res){ // seçilen filmin veritabananında update edilmesi
     var id = req.params.id;
     // console.log(req.body.url + " ******");
     console.log("değiştir");
@@ -146,21 +141,36 @@ app.put('/items6/:id', function(req, res){
     })
 })
 
+var siparisler = [];
 app.put('/items16/:id', function(req, res){
-    var id = req.params.id;                                     // its for login
+    var id = req.params.id;                                     // seçilen kullanıcı bilgilerinin veritabanından değiştirilmesi
     console.log("kullanıcı bilgilerini değiştir");
+    //burdan
+    var id2 = req.params.id2;
+    var user = findOne({_id: mongojs.ObjectId(id2)}, function(err, doc) { // 
+        res.json(doc);  // its 
+    })
+
+    user._id = new ObjectId();
+    user.size = req.params.size;
+    user.adet = req.params.adet;
+    user.stoksayısı = req.params.stoksayısı;
+    siparisler.push(user_id);
+//buraya kadar
     db2.items2.findAndModify({
         query: {_id:mongojs.ObjectId(id)},
         update: {$set: {
             username: req.body.username,
             password: req.body.password,
-            email: req.body.email}},
+            email: req.body.email,
+            siparisler: user._id}},
             new: true},function(err, doc) {
                 res.json(doc);
             
       
     })
 })
+
 
 
 
