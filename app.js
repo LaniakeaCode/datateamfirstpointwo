@@ -52,9 +52,17 @@ app.post('/items16', function(req,res){
     })
 })
 
+app.post('/magza', function(req,res){
+    console.log("kullanıcı verisi ekle");
+    db3.hollyitems.insert(req.body, function( err, doc) {
+        res.json(doc);
+    })
+})
+
 //Başka Fikir: ayrıca kendi ürün tasarımlarınıda ekleyebilirler
-var id = req.params.id;
+
 app.post('/magza/:id' , function (req, res) { // item kopyalayıp ekleme lazım 
+    var id = req.params.id;
     console.log("item kopyalandı ve değiştirildi");  // ürünlerin idsi seçilip o ürünün kopyasını mağza veritabanına ekler.
     var user = findOne({_id: mongojs.ObjectId(id)}, function(err, doc) { // 
         res.json(doc);  // its 
@@ -67,7 +75,7 @@ app.post('/magza/:id' , function (req, res) { // item kopyalayıp ekleme lazım
 
     db3.hollyitems.insert(user, function ( err, doc){ // burda bi şekilde items2 'deki ki ürünü seçen kullanıcının sipariş listesine bu id'yi eklemem lazım.
         res.json(doc); // error olursa 
-    })
+    })//19dec not usefull in front-end
 
 })
 
@@ -90,6 +98,17 @@ app.delete('/items16/:id', function (req, res) { // formda seçilen kullanıcıy
     console.log(id);
 
     db2.items2.remove({_id: mongojs.ObjectId(id)}, function (err, doc){ //its for login
+        res.json(doc);
+    })
+})
+
+app.delete('/magza/:id', function (req, res) {
+    console.log("magza ürünü silindi");
+    var id = req.params.id;
+
+    console.log(id);
+
+    db3.hollyitems.remove({_id: mongojs.ObjectId(id)}, function(err, doc){
         res.json(doc);
     })
 })
@@ -141,6 +160,21 @@ app.put('/items6/:id', function(req, res){ // seçilen filmin veritabananında u
     })
 })
 
+app.put('/magza/:id', function(req, res){
+    var id = req.params.id;
+    console.log("değiştir");
+    db3.items.findAndModify({
+        query: {_id: mongojs.ObjectId(id)},
+        update: {$set: {
+            url: req.body.url,
+            size: req.body.size,
+            adet: req.body.adet,
+            stoksayısı = req.body.stoksayısı
+        }}
+        
+    })
+})
+
 var siparisler = [];
 app.put('/items16/:id', function(req, res){
     var id = req.params.id;                                     // seçilen kullanıcı bilgilerinin veritabanından değiştirilmesi
@@ -156,14 +190,14 @@ app.put('/items16/:id', function(req, res){
     user.adet = req.params.adet;
     user.stoksayısı = req.params.stoksayısı;
     siparisler.push(user_id);
-//buraya kadar
+//buraya kadar sipariş ekleme listeye
     db2.items2.findAndModify({
         query: {_id:mongojs.ObjectId(id)},
         update: {$set: {
             username: req.body.username,
             password: req.body.password,
             email: req.body.email,
-            siparisler: user._id}},
+            siparisler: siparisler}},
             new: true},function(err, doc) {
                 res.json(doc);
             

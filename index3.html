@@ -1,0 +1,70 @@
+<!-- burda bir magza olmalı -->
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="goat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="controller.js"></script>
+    <title>G.O.A.T Movies</title>
+</head>
+
+<body>
+    <header>
+        <div id="head">
+            <h1><a href="index.html">G.O.A.T</a></h1>
+        </div>
+    </header>
+    <main ng-view>
+        <div class="content">
+            <h1>Shop</h1>
+            <div ng-controller="myAppController">
+                <button ng-click="tshirt ='name'">According to Name</button>
+                <button ng-click="tshirt ='color'">According to Color</button>
+                <input type="text" ng-model="search" placeholder="search" />
+                <u1>
+                    <div ng-repeat="item in hollyitems  | orderBy:tshirt | filter:search ">
+                        
+                        <div class="container">
+
+                            <img ng-src="{{item.url}}" class="img-fluid" alt="your image"
+                                style="width:480px;height:480px;" />
+                            <div class="overlay">
+                                <div class="text">Size:{{item.size}}<br> Adet:{item.adet}}<br>Stokta var olan:{{item.stoksayısı}}</div>
+                            </div>
+                        </div>
+                        <div class="remove" ng-click="removeItemOfmagza(item)">X</div>
+                        <div class="edit" ng-click="selectItemOfmagza(item)">+</div>
+
+                    </div>
+
+                </u1>
+
+                <form ng-submit="addItemOfUser()">
+                    <div class="custom-file">
+
+                        <input type="file" onchange="angular.element(this).scope().fileNameChanged(this)"
+                            class="custom-file-input" id="inputGroupFile01" />
+                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                    </div>
+                    <input type="text" placeholder="Size" ng-model="item.size" />
+                    <input type="text" placeholder="Adet" ng-model="item.adet" />
+                    <input type="text" placeholder="Stok" ng-model="item.stoksayısı" />
+                    <input type="submit" value="Add tshirt" />
+                </form>
+                <form ng-submit="showItemInBeginning()">
+
+                    <input type="submit" value="Sugar Show" />
+                </form>
+                <button class="btn btn-info" ng-click="dating()">Update</button>
+
+            </div>
+        </div>
+    </main>
+</body>
+</html>

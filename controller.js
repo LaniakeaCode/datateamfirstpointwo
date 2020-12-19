@@ -14,18 +14,35 @@ myApp.controller('myAppController', function ($scope, $http) {
     }
 
 
-    $scope.showItemInBeginning = function () {
-
-        console.log("Valar Morghulis");
-        $scope.getItem();
-    }
-
     $scope.getItemOfuser = function () {
         $http.get("/items16").then(function (res) {        // its for login's controller
             console.log("kullanıcı bilgileri alındı")
             $scope.items = res.data;
         })
     }
+
+    $scope.getItemOfmagza = function () {
+        $http.get("/magza").then(function (res) {
+            console.log("kullanıcı bilgileri alındı")
+            $scope.items = res.data;
+        })
+    }
+
+
+    $scope.showItemInBeginning = function () { //showing off movie items
+
+        console.log("Valar Morghulis");
+        $scope.getItem();
+    }
+
+    $scope.showItemOfuserInBeginning = function () { //showing off user items if necassary
+        $scope.getItemOfuser();
+    }
+
+    $scope.showItemOfmagzaInBeginning = function () { // showing off magza items
+        $scope.getItemOfmagza();
+    }
+
 
     $scope.addItem = function () {
         $scope.item.url = $scope.poster;
@@ -43,6 +60,14 @@ myApp.controller('myAppController', function ($scope, $http) {
         })
     }
 
+    $scope.addItemOfmagza = function () {
+        $http.post("/magza", $scope.item).then(function (res) {
+            console.log("");
+            $scope.getItemOfmagza();
+
+        })
+    }
+
     $scope.removeItem = function (item) {
         console.log(item);
         $http.delete('/items6/' + item._id).then(function (res) {
@@ -51,11 +76,19 @@ myApp.controller('myAppController', function ($scope, $http) {
         })
     }
 
-    $scope.removeItemOfuser = function (item) {             // its for login's controller
+    $scope.removeItemOfuser = function (item) {             // its for login
         console.log(item);
         $http.delete('/items16/' + item._id).then(function (res) {
             console.log(res);
             $scope.getItemOfuser();
+        })
+    }
+
+    $scope.removeItemOfmagza = function(item) {
+        console.log(item);
+        $http.delete('/magza/' + item._id).then(function (res) {
+            console.log(res);
+            $scope.getItemOfmagza();
         })
     }
 
@@ -66,9 +99,16 @@ myApp.controller('myAppController', function ($scope, $http) {
         });
     }
 
-    $scope.selectItemOfuser = function (item) {             // its for login's controller
+    $scope.selectItemOfuser = function (item) {             // its for login
         console.log(item);
         $http.get('/items16/' + item._id).then(function (res) {
+            $scope.item = res.data;
+        })
+    }
+
+    $scope.selectItemOfmagza = function (item) {
+        console.log(item);
+        $http.get('/magza' + item._id).then(function (res) {
             $scope.item = res.data;
         })
     }
@@ -89,6 +129,13 @@ myApp.controller('myAppController', function ($scope, $http) {
             $scope.getItemOfuser();
         })
 
+    }
+
+    $scope.updatingItemOfmagza = function () {
+        console.log($scope.item._id);
+        $http.put('/magza' + $scope.item._id, $scope.item).then(function (res) {
+            $scope.getItemOfmagza();
+        })
     }
 
 
