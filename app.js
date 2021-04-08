@@ -5,27 +5,8 @@ var db = mongojs('items', ['items']);
 var db2 = mongojs('items', ['items2']);
 var db3 = mongojs('items', ['hollyitems']);
 var bodyParser = require("body-parser");
-var BasicHttpBinding = require('wcf.js').BasicHttpBinding //wcf1
-    , Proxy = require('wcf.js').Proxy
-    , binding = new BasicHttpBinding(
-        {
-            SecurityMode: "TransportWithMessageCredential"
-            , MessageClientCredentialType: "UserName"
-        })
-    , proxy = new Proxy(binding, "http://localhost:7171/Service/clearUsername")
-    , message = "<Envelope xmlns='http://schemas.xmlsoap.org/soap/envelope/'>" +
-        "<Header />" +
-        "<Body>" +
-        "<GetData xmlns='http://tempuri.org/'>" +
-        "<value>123</value>" +
-        "</GetData>" +
-        "</Body>" +
-        "</Envelope>"
-proxy.ClientCredentials.Username.Username = "yaron"
-proxy.ClientCredentials.Username.Password = "1234"
-proxy.send(message, "http://tempuri.org/IService/GetData", function (response, ctx) {
-    console.log(response)
-});//wcf2
+
+
 
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
@@ -34,6 +15,29 @@ app.use(bodyParser.json());
 
 
 var port = 3000;
+
+//IMDB api
+var unirest = require("unirest");
+
+var req = unirest("GET", "https://imdb8.p.rapidapi.com/auto-complete");
+
+req.query({
+	"q": "game of thr"
+});
+
+req.headers({
+	"x-rapidapi-key": "eb77e2b504msh019e34f08b481cfp1dc8bcjsnc478f8a2b126",
+	"x-rapidapi-host": "imdb8.p.rapidapi.com",
+	"useQueryString": true
+});
+
+
+req.end(function (res) {
+	if (res.error) throw new Error(res.error);
+
+	console.log(res.body);
+});
+// IMDB api
 
 app.get('/items6', function (req, res) { // filmeri getirir
     console.log("veri al");
