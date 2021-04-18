@@ -16,28 +16,56 @@ app.use(bodyParser.json());
 
 var port = 3000;
 
-//IMDB api
-var unirest = require("unirest");
-
-var req = unirest("GET", "https://imdb8.p.rapidapi.com/auto-complete");
-
-req.query({
-	"q": "game of thr"
-});
-
-req.headers({
-	"x-rapidapi-key": "eb77e2b504msh019e34f08b481cfp1dc8bcjsnc478f8a2b126",
-	"x-rapidapi-host": "imdb8.p.rapidapi.com",
-	"useQueryString": true
-});
+// //async fonksiyonlar
+// console.log('uygulama basladi.');
+// //2999 ms
+// setTimeout(() => {
+//     console.log('2 sn bekle')
+// },2000);
+// setTimeout(()=>{
+//     console.log('1 sn bekle');
+// },1000)
+// console.log('uygulama bitti.');
 
 
-req.end(function (res) {
-	if (res.error) throw new Error(res.error);
+//IMDB api start
+// var unirest = require("unirest");
 
-	console.log(res.body);
-});
-// IMDB api
+// var req = unirest("GET", "https://imdb8.p.rapidapi.com/auto-complete");
+
+// req.query({
+// 	"q": "Space Jam 2"
+// });
+
+// req.headers({
+// 	"x-rapidapi-key": "eb77e2b504msh019e34f08b481cfp1dc8bcjsnc478f8a2b126",
+// 	"x-rapidapi-host": "imdb8.p.rapidapi.com",
+// 	"useQueryString": true
+// });
+
+
+
+// req.end(function (res) {
+// 	if (res.error) throw new Error(res.error);
+    
+// 	console.log(res.body);
+    
+// });
+// IMDB api end
+
+
+//async function
+const request = require('request');
+const URL ='https://imdb8.p.rapidapi.com/auto-complete';
+request({ url: URL}, (error, response) => {
+console.log(response.body);
+ });
+
+
+
+
+
+
 
 app.get('/items6', function (req, res) { // filmeri getirir
     console.log("veri al");
