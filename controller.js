@@ -4,6 +4,9 @@ myApp.controller('myAppController', function ($scope, $http) {
 
     $scope.poster = null;
 
+
+
+
     $scope.getItem = function () {
         $http.get("/items6").then(function (res) {
             // console.log(res);
@@ -14,20 +17,7 @@ myApp.controller('myAppController', function ($scope, $http) {
     }
 
 
-    $scope.getItemOfuser = function () {
-        $http.get("/items16").then(function (res) {        // its for login's controller
-            console.log("kullanıcı bilgileri alındı")
-            $scope.items = res.data;
-        })
-    }
-
-    $scope.getItemOfmagza = function () {
-        $http.get("/magza").then(function (res) {
-            console.log("kullanıcı bilgileri alındı")
-            $scope.items = res.data;
-        })
-    }
-
+  
 
     $scope.showItemInBeginning = function () { //showing off movie items
 
@@ -35,13 +25,7 @@ myApp.controller('myAppController', function ($scope, $http) {
         $scope.getItem();
     }
 
-    $scope.showItemOfuserInBeginning = function () { //showing off user items if necassary
-        $scope.getItemOfuser();
-    }
-
-    $scope.showItemOfmagzaInBeginning = function () { // showing off magza items
-        $scope.getItemOfmagza();
-    }
+   
 
 
     $scope.addItem = function () {
@@ -53,21 +37,7 @@ myApp.controller('myAppController', function ($scope, $http) {
         })
     }
 
-    $scope.addItemOfuser = function () {                     // its for login's controller
-        $http.post("/items16", $scope.item).then(function (res) {
-            console.log("kullanıcı bilgileri eklendi");
-            $scope.getItemOfuser();
-        })
-    }
-
-    $scope.addItemOfmagza = function () {
-        $http.post("/magza", $scope.item).then(function (res) {
-            console.log("");
-            $scope.getItemOfmagza();
-
-        })
-    }
-
+    
     $scope.removeItem = function (item) {
         console.log(item);
         $http.delete('/items6/' + item._id).then(function (res) {
@@ -76,22 +46,7 @@ myApp.controller('myAppController', function ($scope, $http) {
         })
     }
 
-    $scope.removeItemOfuser = function (item) {             // its for login
-        console.log(item);
-        $http.delete('/items16/' + item._id).then(function (res) {
-            console.log(res);
-            $scope.getItemOfuser();
-        })
-    }
-
-    $scope.removeItemOfmagza = function(item) {
-        console.log(item);
-        $http.delete('/magza/' + item._id).then(function (res) {
-            console.log(res);
-            $scope.getItemOfmagza();
-        })
-    }
-
+    
     $scope.eddie = function (item) {
         console.log(item);
         $http.get('/items6/' + item._id).then(function (res) {
@@ -99,19 +54,7 @@ myApp.controller('myAppController', function ($scope, $http) {
         });
     }
 
-    $scope.selectItemOfuser = function (item) {             // its for login
-        console.log(item);
-        $http.get('/items16/' + item._id).then(function (res) {
-            $scope.item = res.data;
-        })
-    }
-
-    $scope.selectItemOfmagza = function (item) {
-        console.log(item);
-        $http.get('/magza' + item._id).then(function (res) {
-            $scope.item = res.data;
-        })
-    }
+    
 
     $scope.dating = function () {
         $scope.item.url = $scope.poster;
@@ -119,22 +62,6 @@ myApp.controller('myAppController', function ($scope, $http) {
         $http.put('/items6/' + $scope.item._id, $scope.item).then(function (res) {
             console.log(res);
             $scope.getItem();
-        })
-    }
-
-    $scope.updatingItemOfuser = function () {         // its for login
-        console.log($scope.item._id);
-        $http.put('/items16' + $scope.item._id, $scope.item).then(function (res) {
-            console.log(res);
-            $scope.getItemOfuser();
-        })
-
-    }
-
-    $scope.updatingItemOfmagza = function () {
-        console.log($scope.item._id);
-        $http.put('/magza' + $scope.item._id, $scope.item).then(function (res) {
-            $scope.getItemOfmagza();
         })
     }
 
